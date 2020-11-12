@@ -1,0 +1,10 @@
+kind: Mapping
+metadata:
+  name: production-domain-mapping
+  namespace: production
+spec:
+  host: production.domain.com
+  prefix: /
+  service: 'flask-production-app:5000'
+  timeout_ms: 6000
+apiVersion: getambassador.io/v2

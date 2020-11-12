@@ -1,0 +1,10 @@
+kind: Mapping
+metadata:
+  name: development-domain-mapping
+  namespace: development
+spec:
+  host: development.domain.com
+  prefix: /
+  service: 'flask-development-app:5000'
+  timeout_ms: 6000
+apiVersion: getambassador.io/v2

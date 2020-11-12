@@ -1,0 +1,10 @@
+kind: Mapping
+metadata:
+  name: staging-domain-mapping
+  namespace: staging
+spec:
+  host: staging.domain.com
+  prefix: /
+  service: 'flask-staging-app:5000'
+  timeout_ms: 6000
+apiVersion: getambassador.io/v2

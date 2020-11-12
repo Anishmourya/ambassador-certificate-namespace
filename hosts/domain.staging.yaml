@@ -1,0 +1,20 @@
+apiVersion: getambassador.io/v2
+kind: Host
+metadata:
+  name: staging.domain.com
+  namespace: staging
+spec:
+  acmeProvider:
+    authority: 'https://acme-v02.api.letsencrypt.org/directory'
+    email: anish.mourya5@gmail.com
+  ambassadorId:
+    - default
+  hostname: staging.domain.com
+  selector:
+    matchLabels:
+      hostname: staging.domain.com
+  tlsSecret:
+    name: staging.domain.com
+
+
+
