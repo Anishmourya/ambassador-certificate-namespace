@@ -50,3 +50,108 @@ After so many time, I have gone through the docs & also raised an issue on the a
     here development is the namespace of service.
  
  I have tested it perfectly & working as expected, it is installing & renew the certificates perfectly for all domains for different namespaces as well.   
+
+# Env based acme challenge service solution for multiple namespace and domains
+```
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: acme-challenge-mapping-development
+  namespace: development
+spec:
+  prefix: /.well-known/acme-challenge/
+  rewrite: ""
+  host: development.domain.com
+  service: http://acme-challenge-development-service.development
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: acme-default-mapping
+  namspace: development
+spec:
+  host: development.domain.com
+  prefix: /
+  service: http://acme-challenge-mapping-development.development
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: acme-challenge-development-service
+  namespace: development
+spec:
+  ports:
+    - port: 80
+      targetPort: 8089
+  selector:
+    acme.cert-manager.io/http01-solver: "true"
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: acme-challenge-mapping-production
+  namespace: production
+spec:
+  prefix: /.well-known/acme-challenge/
+  rewrite: ""
+  host: domain.com
+  service: http://acme-challenge-production-service.production
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: acme-default-mapping
+  namspace: production
+spec:
+  host: domain.com
+  prefix: /
+  service: http://acme-challenge-mapping-production.production
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: acme-challenge-production-service
+  namespace: production
+spec:
+  ports:
+    - port: 80
+      targetPort: 8089
+  selector:
+    acme.cert-manager.io/http01-solver: "true"
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: acme-challenge-mapping-staging
+  namespace: staging
+spec:
+  prefix: /.well-known/acme-challenge/
+  rewrite: ""
+  host: staging.domain.com
+  service: acme-challenge-staging-service.staging
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: acme-default-mapping
+  namspace: staging
+spec:
+  host: staging.domain.com
+  prefix: /
+  service: http://acme-challenge-mapping-staging.staging
+---
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: acme-challenge-staging-service
+  namespace: staging
+spec:
+  ports:
+    - port: 80
+      targetPort: 8089
+  selector:
+    acme.cert-manager.io/http01-solver: "true"
+
+```
