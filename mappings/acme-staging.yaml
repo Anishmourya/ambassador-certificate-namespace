@@ -7,8 +7,19 @@ metadata:
 spec:
   prefix: /.well-known/acme-challenge/
   rewrite: ""
+  host: staging.domain.com
   service: acme-challenge-staging-service.staging
-
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: acme-default-mapping
+  namspace: staging
+spec:
+  host: staging.domain.com
+  prefix: /
+  service: http://acme-challenge-mapping-staging.staging
+---
 ---
 apiVersion: v1
 kind: Service

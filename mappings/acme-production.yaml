@@ -7,8 +7,18 @@ metadata:
 spec:
   prefix: /.well-known/acme-challenge/
   rewrite: ""
-  service: acme-challenge-production-service.production
-
+  host: domain.com
+  service: http://acme-challenge-production-service.production
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: acme-default-mapping
+  namspace: production
+spec:
+  host: domain.com
+  prefix: /
+  service: http://acme-challenge-mapping-production.production
 ---
 apiVersion: v1
 kind: Service
